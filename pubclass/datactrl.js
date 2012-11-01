@@ -3,19 +3,21 @@
  *  Depends on the jQuery
  *  2012 05 17
  *  */
-DataControl =  function(opts){
+DataControl = function(opts){
         var _config = {
             dataSourse:""
            ,dataType : "jsonp"
            ,dataVarible :""    
+           ,dataName : "data"
            ,page     : 1
            ,pageType : "server"
+           ,totalName: "count"
            ,dataArrList:""
            ,countName: ""
         }
 
         var config =$.extend(_config,opts);
-        var me = this,me.constructor.dataCache = {},me.constructor.fullDataCache = {},pageCache = {},total = 0,pageSize = config.pageSize||10,totalPage=1,page = config.page,start = (page-1)*pageSize;
+        var me = this,dataCache = {},fullDataCache = {},pageCache = {},total = 0,pageSize = config.pageSize||10,totalPage=1,page = config.page,start = (page-1)*pageSize;
         /*
          * getScript
          * 动态加载JS文件 
@@ -68,8 +70,8 @@ DataControl =  function(opts){
          * */
         var callBack = function(url,fn,params){
             //数据返回后回调该方法
-            me.constructor.dataCache[escape(url)] = this.data;
-            me.constructor.fullDataCache[escape(url)] = this.fullData;
+            dataCache[escape(url)] = this.data;
+            fullDataCache[escape(url)] = this.fullData;
             if(typeof fn === "function"){
                 fn.call(this,this.fullData);
             }
@@ -86,35 +88,53 @@ DataControl =  function(opts){
                     config.loadFn.call(me);
               }
               var initData = function(_d){
-                    var _data = me.fullData = _d || {};
-                    var _count,data;
-                    if(config.dataArrList && config.dataArrList != ""){
-                      try{data = new Function("_d","return _d."+config.dataArrList.replace(/>/g,".")+"|| {}")(_d)}catch(e){
-                          data = {};
-                      };
-                    }
-                    if(config.countName && config.countName !=""){
-                      try{var _count = new Function("_d","return _d."+config.countName.replace(/>/g,"."))(_d)}catch(e){
-                          _count = 0;
-                      };
-                    }
+                  var _data = me.fullData = _d || {};
+                  var _count,data;
+                  if(config.dataArrList && config.dataArrList != ""){
+                    try{data = new Function("_d","return _d."+config.dataArrList.replace(/>/g,".")+"|| {}")(_d)}catch(e){
+                        data = {};
+                    };
+                  }
+                  else{
+                  if(config.hasStatus){
+                       _data = _data[config.hasStatus] || [];
+                   }
+                    data = _data[config.dataName] || {};
+                  }
+                  if(config.countName && config.countName !=""){
+                    try{var _count = new Function("_d","return _d."+config.countName.replace(/>/g,"."))(_d)}catch(e){
+                       };
+                  }
+                  else{
+                    var _count = _data[config.totalName];
+                  }
                     if(data.length ==undefined){
                         _e("no data  dataArrList maybe error:url("+me.URL+")");
                     }
+                    if(isNaN(_count)){
+                        _e("countField not found  countName maybe error:url("+me.URL+")");
+                    }
                     total = isNaN(_count)?data.length>>0:_count>>0;
                     totalPage = parseInt(total/pageSize)+Math.min(total%pageSize,1);
+
                     if(data.length>>0>0){
                         me.data = data;
                     }
                     else{
                         me.data = [];
                     }
+
+                    if(totalPage && me.data.length == 0 && page > totalPage){
+                        //如果删除最后一页最后一条记录后，重载到当前页。会出现page>totalPage的情况。
+                        me.page(totalPage);
+                        return;
+                    }
                     callBack.apply(me,[url,opts.fn,_d]);                
               };
-          if(me.constructor.dataCache[escape(url)]){
-                this.data = me.constructor.dataCache[escape(url)];
-                this.fullData = me.constructor.fullDataCache[escape(url)];
-                //callBack.apply(me,[url,opts.fn,me.constructor.fullDataCache[escape(url)]]);  
+          if(dataCache[escape(url)]){
+                this.data = dataCache[escape(url)];
+                this.fullData = fullDataCache[escape(url)];
+                //callBack.apply(me,[url,opts.fn,fullDataCache[escape(url)]]);  
                 initData(this.fullData);
               }else{
                   var _data = {};
@@ -128,7 +148,7 @@ DataControl =  function(opts){
                           });
                       break;
                       case "jsonp":
-                          $.getJSON(url,{callback:"?"},function(responseData){
+                          $.getJSON(url,function(responseData){
                             initData(responseData);
                           });
                       break;
@@ -155,16 +175,16 @@ DataControl =  function(opts){
          * */   
         var getDataByClient = function(url,dataType){
             //TODO:客户端方法还未完成
-                if(me.constructor.dataCache[escape(url)]){
+                if(dataCache[escape(url)]){
                   this.data = pageCache[page];
                   callBack.apply(me,[url,opts.fn,arguments]);  
               }
               else{ 
                     var initData = function(_data){
+                        var data ={}
                         try{
                             data = new Function("_d","return _d."+config.dataArrList.replace(/>/g,"."))(_data);
                         }catch(e){}
-                        var data = data || {}
                         total = data.length>>0;
                         if(/^nopages$/i.test(config.pageType)){
                             me.data = data;
@@ -259,7 +279,7 @@ DataControl =  function(opts){
          * */
         this.page = function(p){
             if(p){
-                var p =parseInt(p); 
+                var p =parseInt(p);
                 if(p != page && p>0 && p<=totalPage){
                    page = p;
                    start = (page-1)*pageSize;
@@ -302,9 +322,9 @@ DataControl =  function(opts){
          * */
         this.clearCache = function(){
             //TODO 没有做针对URL的清空 
-            me.constructor.dataCache = {};
-            me.constructor.fullDataCache = {};
+            dataCache = {};
+            fullDataCache = {};
             return this;
         };
         constructor.apply(this);//初始化
-    }
+    };
