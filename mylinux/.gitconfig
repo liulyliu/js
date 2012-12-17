@@ -1,0 +1,34 @@
+[user]
+	name = liulyliu 
+	email = liulyliu@sohu-inc.com 
+[alias]
+	ci = commit
+    st = status 
+    co = checkout
+    bc = branch
+    lg = log --color --graph --pretty=format:'%c(yellow)%h%creset -%cred%d%creset %s %c(bold blue)(%cn %cr)%creset'
+    ll = log --color --pretty=format:'%c(yellow)%h%creset -%cred%d%creset %s %c(bold blue)(%cn %cr)%creset' --no-merges
+[core]
+	editor = gvim
+	excludesfile = /home/arck/.gitignore
+[merge]
+	tool = vimdiff
+[mergetool "vimdiff"]
+   #cmd = "gvim --noplugin \"$PWD/$MERGED\" \
+   #    +\":split $PWD/$REMOTE\" +\":set buftype=nowrite\" \
+   #    +\":vertical diffsplit $PWD/$LOCAL\" +\":set buftype=nowrite\" \
+   #    +\":vertical diffsplit $PWD/$BASE\" +\":set buftype=nowrite\" \
+   #    +\":wincmd l\""
+
+[diff]
+    tool = mvimdiff
+[gui]
+    encoding = utf-8
+[i18n]
+    commitencoding = utf-8
+    logoutputencoding = utf-8
+
+[color]
+    status = auto
+    branch = auto
+    ui = auto

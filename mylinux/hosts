@@ -1,0 +1,55 @@
+# The following lines are desirable for IPv6 capable hosts
+::1     ip6-localhost ip6-loopback
+fe00::0 ip6-localnet
+ff00::0 ip6-mcastprefix
+ff02::1 ip6-allnodes ff02::2 ip6-allrouters
+127.0.0.1	localhost
+127.0.1.1	arck-sohu-inc 
+10.1.53.39      aben.com
+61.135.151.114  mm.com
+
+127.0.0.1 tv.sohu.com
+#127.0.0.1 js.tv.itc.cn 
+#127.0.0.1 css.tv.itc.cn 
+#192.168.105.41 my.tv.sohu.com
+#192.168.105.41 v.blog.sohu.com
+#192.168.105.41 api.my.tv.sohu.com
+#10.11.132.86 my.tv.sohu.com
+#10.10.77.48  my.tv.sohu.com
+#10.10.77.53    my.tv.sohu.com
+#10.10.77.52    my.tv.sohu.com
+#10.11.20.79 my.tv.sohu.com
+#61.135.181.236  tv.sohu.com
+#10.11.20.176  tv.sohu.com
+#10.11.20.174 tv.sohu.com
+#10.10.77.177  poll.tv.sohu.com
+#10.11.20.171  tv.sohu.com
+#192.168.105.144 tv.sohu.com
+#10.11.132.64	spring.tv.sohu.com
+#
+#192.168.105.41 huodong.tv.sohu.com
+#10.10.77.176 poll.hd.sohu.com
+
+#0.0.0.0       images.sohu.com
+#0.0.0.0       mfiles.sohu.com
+#10.11.132.67    open.tv.sohu.com
+#10.1.72.187    test.tv.sohu.com
+#192.168.105.144 ued.tv.sohu.com
+#10.10.83.89      card.my.tv.sohu.com
+# 192.168.95.182 passport.sohu.com internal.passport.sohu.com
+#10.11.132.112 search.vrs.sohu.com search.vrs.tv.sohu.com
+
+# 斑马项目
+
+#live
+#192.168.20.165 show.sohu.com
+#192.168.20.165 js.live.tv.itc.cn 
+#192.168.20.165 css.live.tv.itc.cn 
+#192.168.20.165 img.live.tv.itc.cn 
+#192.168.20.165 swf.live.tv.itc.cn 
+#192.168.20.165 c1.int c1.chat.itc.cn
+#
+#
+#
+#127.0.0.1 www.zooooooom.com
+#127.0.0.1 www.uiueux.com
